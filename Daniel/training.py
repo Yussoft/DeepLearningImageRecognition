@@ -17,11 +17,13 @@ import random
 import cv2
 import os
 
+height=100
+width=100
 
 
 # initialize the number of epochs to train for, initial learning rate,
 # and batch size
-EPOCHS = 25
+EPOCHS = 500
 INIT_LR = 1e-3
 BS = 32
  
@@ -37,9 +39,9 @@ random.shuffle(imagePaths)
 
 for imagePath in imagePaths:
 	# load the image, pre-process it, and store it in the data list
-	if(imagePath[-4:]==".jpg"):
+	if(imagePath[-4:]==".jpg" or imagePath[-4:]==".png" or imagePath[-4:]==".JPG"):
 		image = cv2.imread(imagePath)
-		image = cv2.resize(image, (28, 28))
+		image = cv2.resize(image, (height, width))
 		image = img_to_array(image)
 		data.append(image)
  
@@ -53,8 +55,10 @@ for imagePath in imagePaths:
 data = np.array(data, dtype="float") / 255.0
 labels = np.array(labels)
 
+(trainX, testX, trainY, testY) = train_test_split(data,labels, test_size=0.25, random_state=42)
 
-labels = to_categorical(labels, num_classes=2)
+trainY = to_categorical(trainY, num_classes=2)
+testY = to_categorical(testY, num_classes=2)
 
 aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
 	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
@@ -63,13 +67,16 @@ aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
 
 
 print("[INFO] compiling model...")
-model = LeNet.build(width=28, height=28, depth=3, classes=2)
+model = LeNet.build(width=width, height=height, depth=3, classes=2)
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
 model.compile(loss="binary_crossentropy", optimizer=opt,metrics=["accuracy"])
 
 
 print("[INFO] training network...")
-H = model.fit_generator(aug.flow(data, labels, batch_size=BS))
+H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
+	validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,
+	epochs=EPOCHS, verbose=1)
+
 
 print("[INFO] serializing network...")
 model.save("modelo")

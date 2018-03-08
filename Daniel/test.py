@@ -9,6 +9,9 @@ from imutils import paths
 import cv2
 import csv, operator
 
+height=100
+width=100
+
 imagePaths = sorted(list(paths.list_images("./Test")))
 
 imagePaths.sort(key=lambda image: int(image.split("img")[1].split(".")[0]))
@@ -16,7 +19,6 @@ imagePaths.sort(key=lambda image: int(image.split("img")[1].split(".")[0]))
 datos=[]
 print("[INFO] loading network...")
 model = load_model("modelo")
-i=1
 for imagePath in imagePaths:
 	# load the image, pre-process it, and store it in the data list
 	if(imagePath[-4:]==".jpg" or imagePath[-4:]==".png" or imagePath[-4:]==".JPG"):
@@ -25,13 +27,12 @@ for imagePath in imagePaths:
 		orig = image.copy()
 
 		# pre-process the image for classification
-		image = cv2.resize(image, (28, 28))
+		image = cv2.resize(image, (height, width))
 		image = image.astype("float") / 255.0
 		image = img_to_array(image)
 		image = np.expand_dims(image, axis=0)
 
 		# load the trained convolutional neural network
-		print(i,"/799")
 
 		# classify the input image
 		(movil, pistola) = model.predict(image)[0]
@@ -42,7 +43,6 @@ for imagePath in imagePaths:
 			datos.append((imagePath[7:],0))
 		else:
 			datos.append((imagePath[7:],1))
-		i=i+1
 csvsalida = open('salidat.csv', 'w', newline='')
 salida = csv.writer(csvsalida)
 salida.writerow(['ID', 'Ground_Truth'])
