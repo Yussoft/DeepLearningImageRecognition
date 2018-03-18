@@ -1,6 +1,9 @@
 from keras.models import Sequential
 from keras.layers.convolutional import Conv2D
 from keras.layers.convolutional import MaxPooling2D
+from keras.layers.convolutional import SeparableConv2D
+from keras.layers.convolutional import Conv2DTranspose
+from keras.layers.core import Dropout
 from keras.layers.core import Activation
 from keras.layers.core import Flatten
 from keras.layers.core import Dense
@@ -16,16 +19,34 @@ class LeNet:
 		# if we are using "channels first", update the input shape
 		if K.image_data_format() == "channels_first":
 			inputShape = (depth, height, width)
-		model.add(Conv2D(20, (5, 5), padding="same",input_shape=inputShape))
+		model.add(Conv2D(20, (3, 3), padding="same",input_shape=inputShape))
 		model.add(Activation("relu"))
 		model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 		# second set of CONV => RELU => POOL layers
-		model.add(Conv2D(50, (5, 5), padding="same"))
+
+		model.add(Conv2D(50, (3, 3), padding="same"))
+		model.add(Activation("relu"))
+
+		model.add(Conv2D(90, (3, 3), padding="same"))
 		model.add(Activation("relu"))
 		model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+		model.add(Dropout(0.23))
+
+		model.add(Conv2D(100, (3, 3), padding="same"))
+		model.add(Activation("relu"))
+
+		model.add(Conv2D(180, (3, 3), padding="same"))
+		model.add(Activation("relu"))
+
+		model.add(Conv2D(300, (3, 3), padding="same"))
+		model.add(Activation("relu"))
+		model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+		model.add(Dropout(0.23))
+
+
 		# first (and only) set of FC => RELU layers
 		model.add(Flatten())
-		model.add(Dense(500))
+		model.add(Dense(600))
 		model.add(Activation("relu"))
  
 		# softmax classifier

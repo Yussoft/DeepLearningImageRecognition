@@ -17,13 +17,13 @@ import random
 import cv2
 import os
 
-height=100
-width=100
+height=80
+width=80
 
 
 # initialize the number of epochs to train for, initial learning rate,
 # and batch size
-EPOCHS = 500
+EPOCHS = 450
 INIT_LR = 1e-3
 BS = 32
  

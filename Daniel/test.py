@@ -9,8 +9,8 @@ from imutils import paths
 import cv2
 import csv, operator
 
-height=100
-width=100
+height=80
+width=80
 
 imagePaths = sorted(list(paths.list_images("./Test")))
 
