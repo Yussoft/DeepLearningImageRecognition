@@ -37,30 +37,40 @@ labels = []
 os.chdir("C:\\Users\\Yus\\Desktop\\DeepLearningImageRecognition\\Train\\Pistol")
 file_names = os.listdir()
 
-for im_name in file_names:
-    n_image = cv2.imread(im_name) # Read an imagep
-    n_image = cv2.resize(n_image,(128,128)) # Resize it to 128x128pixels
-    n_image = img_to_array(n_image) 
-    data.append(n_image)
-
-    label = "Pistol"
-    labels.append(label)
-
-print("[INFO] Training images (PISTOL) read:",len(data))
-
-# Go the the train images directory and load them SMARTPHONES
-os.chdir("C:\\Users\\Yus\\Desktop\\DeepLearningImageRecognition\\Train\\Smartphone")
-file_names = os.listdir()
+print(file_names)
+pistol_max_width = 0
+pistol_min_width = 0
+pistol_max_height = 0
+pistol_min_height = 0
 
 for im_name in file_names:
-    n_image = cv2.imread(im_name) # Read an imagep
-    n_image = cv2.resize(n_image,(128,128)) # Resize it to 128x128pixels
-    n_image = img_to_array(n_image) 
-    data.append(n_image)
 
-    label = "Pistol"
-    labels.append(label)
+    file_name = os.path.splitext(im_name)
+    file_extension = file_name[1]
+    
+    if file_extension == ".jpg":
+        n_image = cv2.imread(im_name)
+        shape = n_image.shape
 
-print("[INFO] Training images (SMARTPHONE) read:",len(data))    
-print("[INFO] Training images (TOTAL) read:",len(data))
+        print(shape[0])
 
+        if shape[0] > pistol_max_width:
+            pistol_max_width = shape[0]
+
+        elif shape[0] < pistol_min_width:
+            pistol_min_width = shape[0]
+        
+        if shape[1] > pistol_max_height:
+            pistol_max_height = shape[1]
+        
+        elif shape[1] < pistol_min_height:
+            pistol_min_height = shape[1]
+       
+
+print("Pistol max height:",pistol_max_height)
+
+print("Pistol min height:",pistol_min_height)
+
+print(pistol_max_width)
+
+print(pistol_min_width)
