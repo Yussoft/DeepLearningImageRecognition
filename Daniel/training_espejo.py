@@ -25,7 +25,7 @@ width=80
 
 # initialize the number of epochs to train for, initial learning rate,
 # and batch size
-EPOCHS = 500
+EPOCHS = 620
 INIT_LR = 1e-3
 BS = 32
  
@@ -77,7 +77,7 @@ labels = np.array(labels)
 trainY = to_categorical(trainY, num_classes=2)
 testY = to_categorical(testY, num_classes=2)
 
-aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
+aug = ImageDataGenerator(rotation_range=360, width_shift_range=0.1,
 	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
 	horizontal_flip=True, fill_mode="nearest")
 
