@@ -63,19 +63,15 @@ aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
 	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
 	horizontal_flip=True, fill_mode="nearest")
 
-
-
 print("[INFO] compiling model...")
 model = LeNet.build(width=width, height=height, depth=3, classes=2)
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
 model.compile(loss="binary_crossentropy", optimizer=opt,metrics=["accuracy"])
 
-
 print("[INFO] training network...")
-H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
-	validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS,
+H = model.fit_generator(aug.flow(trainX, trainY, batch_size = BS),
+	validation_data = (testX, testY), steps_per_epoch = len(trainX) // BS,
 	epochs=EPOCHS, verbose=1)
-
 
 print("[INFO] serializing network...")
 model.save("modelo")

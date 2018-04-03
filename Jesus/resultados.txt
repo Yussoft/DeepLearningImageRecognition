@@ -1,0 +1,56 @@
+-------------------------------------------------
+Experimento 1:
+Image size :60x60px
+Epochs: 300 , Batch size: 64 , learning rate: 0.001
+f1: 20 f2: 50
+kernel size:3 ,pool size: 3 ,stride 2 ,neurons: 1000
+Model eval acc: 0.9783783851443111 in epoch nº270
+-------------------------------------------------
+Experimento 2:
+Image size :60x60px
+Epochs: 300 , Batch size: 64 , learning rate: 0.001
+f1: 25 f2: 50
+kernel size:3 ,pool size: 3 ,stride 2 ,neurons: 500
+Model eval acc: 0.989189193699811 in epoch nº262
+-------------------------------------------------
+Experimento 3 (Dropout 0.5):
+Image size :60x60px
+Epochs: 300 , Batch size: 64 , learning rate: 0.001
+f1: 25 f2: 50
+kernel size:3 ,pool size: 3 ,stride 2 ,neurons: 500
+Model eval acc: 0.9729729819942166 in epoch nº39
+-------------------------------------------------
+Experimento 4 (Dropout 0.5) y capa nueva:
+Image size :60x60px
+Epochs: 300 , Batch size: 64 , learning rate: 0.001
+f1: 25 f2: 50
+kernel size:3 ,pool size: 3 ,stride 2 ,neurons: 500
+Model eval acc: 0.9891891914445001 in epoch nº122
+-------------------------------------------------
+Experimento 5 (Dropout 0.5)+neuronas y capa nueva:
+Image size :64x64px
+Epochs: 300 , Batch size: 64 , learning rate: 0.001
+f1: 25 f2: 50
+kernel size:3 ,pool size: 3 ,stride 2 ,neurons: 750
+Model eval acc: 0.9891891914445001 in epoch nº157
+-------------------------------------------------
+Experimento 6 raro:
+Image size :64x64px
+Epochs: 400 , Batch size: 32 , learning rate: 0.001
+f1: 25 f2: 50
+kernel size:3 ,pool size: 3 ,stride 2 ,neurons: 300
+Model eval acc: 0.9945945945945946 in epoch nº352
+-------------------------------------------------
+Experimento 7 flip raro:
+Image size :64x64px
+Epochs: 400 , Batch size: 32 , learning rate: 0.001
+f1: 25 f2: 50
+kernel size:3 ,pool size: 3 ,stride 2 ,neurons: 300
+Model eval acc: 1.0 in epoch nº323
+-------------------------------------------------
+Experimento 8 flip raro:
+Image size :64x64px
+Epochs: 400 , Batch size: 32 , learning rate: 0.001
+f1: 32 f2: 64
+kernel size:3 ,pool size: 3 ,stride 2 ,neurons: 300
+Model eval acc: 0.9945945945945946 in epoch nº291

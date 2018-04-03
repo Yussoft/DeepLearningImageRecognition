@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from keras.preprocessing.image import img_to_array
 from keras.utils import to_categorical
-from LeNetCNN import build_CNN
+from YusNet import build_YusNet
 from imutils import paths
 import matplotlib.pyplot as plt
 import numpy as np
@@ -18,10 +18,6 @@ import random
 import cv2
 import os
 import pandas as pandas
-
-# Hyperparameters
-# Height, width, f1, f2, kernel size, pool size, stride, neurons
-parameters = [64,64,32,64,3,3,2,300]
 
 # Initialize the data and labels
 print("[INFO] Loading images...")
@@ -38,18 +34,15 @@ image_paths = sorted(list(paths.list_images(directory)))
 random.seed(77189383)
 random.shuffle(image_paths)
 
-height = parameters[0]
-width = parameters[1]
+height = 128
+width = 128
 for image_path in image_paths:
 
     # load the image, pre-process it, and store it in the data list
     if(image_path[-4:]==".jpg" or image_path[-4:]==".png" or image_path[-4:]==".JPG"):
         image = cv2.imread(image_path)
-
         image = cv2.resize(image, (height, width))
-
         image = img_to_array(image)
-        
         data.append(image)
     
         # extract the class label from the image path and update the
@@ -65,15 +58,15 @@ labels = np.array(labels)
 # partition the data into training and testing splits using 75% of
 # the data for training and the remaining 25% for testing
 (trainX, testX, trainY, testY) = train_test_split(data,
-	labels, test_size = 0.25, random_state = 42)
+	labels, test_size = 0.25, random_state = 77183983)
  
 # convert the labels from integers to vectors
 trainY = to_categorical(trainY, num_classes = 2)
 testY = to_categorical(testY, num_classes = 2)
 
 # construct the image generator for data augmentation
-aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
-	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
+aug = ImageDataGenerator(rotation_range = 45, width_shift_range = 0.1,
+	height_shift_range=0.2, shear_range=0.2, zoom_range=0.25,
 	horizontal_flip=True, fill_mode = "nearest")
 
 # initialize the model
@@ -81,11 +74,11 @@ print("[INFO] compiling model...")
 
 # initialize the number of epochs to train for, initial learning rate,
 # and batch size
-EPOCHS = 400
+EPOCHS = 300
 INIT_LR = 1e-3
-BS = 32
+BS = 64
 # build_CNN(height, width, f1, f2, kernel_size, pool_size, stride, neurons)
-model = build_CNN(parameters)
+model = build_YusNet()
 # opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
  
 # train the network
@@ -96,7 +89,7 @@ H = model.fit_generator(aug.flow(trainX, trainY, batch_size = BS),
  
 # save the model to disk
 print("[INFO] serializing network...")
-model.save("modelo_8")
+model.save("modelo_yusnet_1")
 
 # Save the best evaluation accuracy
 best_acc = 0
@@ -108,10 +101,4 @@ for i in range(len(val_acc)):
         best_acc = val_acc[i]
         best_epoch = i
 
-with open("resultados.txt", "a") as file:
-    file.write("-------------------------------------------------\n")
-    file.write("Experimento 8 flip raro:\nImage size :"+str(parameters[0])+"x"+str(parameters[1])+"px\n")
-    file.write("Epochs: "+ str(EPOCHS)+ " , Batch size: "+ str(BS)+" , learning rate: "+str(INIT_LR)+"\n")
-    file.write("f1: "+str(parameters[2])+" f2: "+str(parameters[3])+"\n")
-    file.write("kernel size:"+str(parameters[4])+" ,pool size: "+str(parameters[5])+" ,stride "+str(parameters[6])+ " ,neurons: " + str(parameters[7])+"\n")
-    file.write("Model eval acc: "+str(best_acc)+" in epoch nº"+str(best_epoch)+"\n")
+print("Best val_acc: ",best_acc)
